@@ -1,5 +1,6 @@
-from enums import Color, Shade, Shape, Number
+from .enums import Color, Shade, Shape, Number
 from typing import List, Dict, Iterable
+from collections import defaultdict
 
 # Types
 SET_OF_CARDS = Dict[str, "Set"]
@@ -7,7 +8,32 @@ LIST_OF_CARDS = List["Card"]
 LIST_OF_LIST_OF_CARDS = List[List["Card"]]
 CARDS_ATTR_VAL_MAP = Dict[str, Dict[int, List["Card"]]]
 
+# Constant Keys
+CARDS_ATTR_VAL_MAP_COLOR_KEY = "Color"
+CARDS_ATTR_VAL_MAP_SHADE_KEY = "Shade"
+CARDS_ATTR_VAL_MAP_SHAPE_KEY = "Shape"
+CARDS_ATTR_VAL_MAP_NUMBER_KEY = "Number"
+
+
+class Card:
+    """ Our Card class which represents a card with different attributes. """
+    def __init__(self, color: Color = None, shade: Shade=None, shape: Shape=None, number: Number=None):
+        self.color = color
+        self.shade = shade
+        self.shape = shape
+        self.number = number
+
+        self.uid = int(str(self))
+
+    def __str__(self):
+        return (
+            f"{self.color.value}{self.shade.value}{self.shape.value}{self.number.value}"
+        )
+
+
 class Set:
+    """Our Set class to house our logic around creating a set with cards."""
+
     def __init__(self, size: int):
         self.size = size
         self.key: str = None
@@ -51,21 +77,6 @@ class Set:
         return is_colors_set and is_shapes_set and is_numbers_set and is_shades_set
 
 
-class Card:
-    def __init__(self, color: Color, shade: Shade, shape: Shape, number: Number):
-        self.color = color
-        self.shade = shade
-        self.shape = shape
-        self.number = number
-
-        self.uid = int(str(self))
-
-    def __str__(self):
-        return (
-            f"{self.color.value}{self.shade.value}{self.shape.value}{self.number.value}"
-        )
-
-
 def create_card_deck() -> LIST_OF_CARDS:
     """
     Create a deck of cards.
@@ -85,6 +96,28 @@ def create_card_deck() -> LIST_OF_CARDS:
                     cards.append(card)
 
     return cards
+
+
+def create_cards_attribute_value_map(cards: LIST_OF_CARDS) -> CARDS_ATTR_VAL_MAP:
+    """
+    Create a mapping of attribute values to cards.
+
+    This function creates a mapping of attribute values to cards, which is used to quickly access cards by attribute value.
+    """
+    cards_attr_val_map: CARDS_ATTR_VAL_MAP = {
+        CARDS_ATTR_VAL_MAP_COLOR_KEY: defaultdict(list),
+        CARDS_ATTR_VAL_MAP_SHADE_KEY: defaultdict(list),
+        CARDS_ATTR_VAL_MAP_SHAPE_KEY: defaultdict(list),
+        CARDS_ATTR_VAL_MAP_NUMBER_KEY: defaultdict(list),
+    }
+
+    for card in cards:
+        cards_attr_val_map[CARDS_ATTR_VAL_MAP_COLOR_KEY][card.color].append(card)
+        cards_attr_val_map[CARDS_ATTR_VAL_MAP_SHADE_KEY][card.shade].append(card)
+        cards_attr_val_map[CARDS_ATTR_VAL_MAP_SHAPE_KEY][card.shape].append(card)
+        cards_attr_val_map[CARDS_ATTR_VAL_MAP_NUMBER_KEY][card.number].append(card)
+
+    return cards_attr_val_map
 
 
 def find_sets_for_cards(
@@ -126,7 +159,7 @@ def find_sets_for_cards(
 
         if card_set.is_set():
             sets[card_set.key] = card_set
-        
+
         card_set = Set(set_size)
 
         for card in cards_in_hand:
@@ -147,43 +180,36 @@ def create_sets(cards: LIST_OF_CARDS, set_size: int) -> LIST_OF_LIST_OF_CARDS:
         LIST_OF_LIST_OF_CARDS: A dictionary containing the generated sets of cards.
             The keys are strings representing the unique identifiers of each set,
             and the values are Set objects containing the cards in each set.
+
+    Considerations:
+        This isn't performance friendly, it's only meant to be comprehensive and simple to understand.
+
+        A possible performance improvement would be to use the `create_cards_attribute_value_map` function to create a mapping of attribute values to cards
+        And then use that mapping to quickly access cards by attribute value instead of iterating over all cards.
+
+        For each card and for each attribute on the card we could find all the cards that:
+            1. Have the same attribute value
+            2. Have different attribute values
     """
     sets: Dict[str, Set] = {}
 
     if set_size == 3:
         for i in range(0, len(cards)):
+            for j in range(i + 1, len(cards)):
 
-            if i + 1 > len(cards) - 1:
-                card_sets = find_sets_for_cards([cards[i]], set_size, cards)
+                card_sets = find_sets_for_cards([cards[i], cards[j]], set_size, cards)
+
                 sets.update(card_sets)
-                break
-            
-
-            primary_card = cards[i]
-            secondary_card = cards[i + 1]
-
-            card_sets = find_sets_for_cards(
-                [primary_card, secondary_card], set_size, cards
-            )
-
-            sets.update(card_sets)
 
     if set_size == 4:
         for i in range(0, len(cards)):
+            for j in range(i + 1, len(cards)):
+                for k in range(j + 1, len(cards)):
 
-            if i + 2 > len(cards) - 1:
-                card_sets = find_sets_for_cards([cards[i]], set_size, cards)
-                sets.update(card_sets)
-                break
+                    card_sets = find_sets_for_cards(
+                        [cards[i], cards[j], cards[k]], set_size, cards
+                    )
 
-            primary_card = cards[i]
-            secondary_card = cards[i + 1]
-            tertiary_card = cards[i + 2]
+                    sets.update(card_sets)
 
-            card_sets = find_sets_for_cards(
-                [primary_card, secondary_card, tertiary_card], set_size, cards
-            )
-
-            sets.update(card_sets)
-
-    return sets
+    return sets.keys()

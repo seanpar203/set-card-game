@@ -52,10 +52,10 @@ And it will return the possible permutations in the following data structure:
 # Set Card Game
 A really interesting game that's based on finding a set(3) cards that follow the current rules:
 
-They all have the same number or have three different numbers.
-They all have the same shape or have three different shapes.
-They all have the same shading or have three different shadings.
-They all have the same color or have three different colors.
+1. They all have the same number or have three different numbers.
+2. They all have the same shape or have three different shapes.
+3. They all have the same shading or have three different shadings.
+4. They all have the same color or have three different colors.
 
 There's 4 attributes on each card and 3 possible values.
 

@@ -20,4 +20,6 @@ def test_play():
         "set_size": 3
     }
 
-    client.post("/play", json=data)
+    res = client.post("/api/play", json=data)
+
+    assert len(res.json()["sets"]) == 73840

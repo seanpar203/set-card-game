@@ -5,7 +5,7 @@ from .enums import Color, Shade, Shape, Number
 
 app = FastAPI()
 
-@app.post("api/play")
+@app.post("/api/play/")
 async def play(config: GameConfig) -> Sets:
     """
     Endpoint for playing the Set Card Game

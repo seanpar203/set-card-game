@@ -8,7 +8,7 @@ A FastAPI service that returns all the possible permutations of the Set Card Gam
 4. run `make run`
 
 # Usage
-Hit `/api/play/` with the following data structure:
+Hit `localhost:8000/api/play/` with the following data structure:
 
 ```json
 {

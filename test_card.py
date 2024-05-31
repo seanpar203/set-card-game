@@ -1,4 +1,4 @@
-from card import Card, create_card_deck, create_attr_val_map, create_sets
+from card import Card, create_card_deck, create_sets
 
 
 def test_create_card_deck():
@@ -6,11 +6,6 @@ def test_create_card_deck():
 
     assert len(deck) == 81
     assert all(isinstance(card, Card) for card in deck)
-
-
-def test_create_attr_val_map():
-    deck = create_card_deck()
-    attr_val_map = create_attr_val_map(deck)
 
 
 def test_create_sets():

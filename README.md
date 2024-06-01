@@ -31,8 +31,7 @@ Hit `localhost:8000/api/play/` with the following data structure:
             "shade": 3,
             "number": 2
         }
-    ],
-    "set_size": 3
+    ]
 }
 ```
 

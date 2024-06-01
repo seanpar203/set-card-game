@@ -9,7 +9,7 @@ CARDS_ATTR_VAL_MAP = Dict[str, Dict[int, List["Card"]]]
 
 
 class Card:
-    """Our Card class which represents a card with different attributes."""
+    """Our Internal Card class which represents a card with different attributes."""
 
     def __init__(
         self,
@@ -32,7 +32,7 @@ class Card:
 
 
 class Set:
-    """Our Set class to house our logic around creating a set with cards."""
+    """Our Internal Set class to house our logic around creating a set with cards."""
 
     def __init__(self):
         self.key: str = None

@@ -80,8 +80,6 @@ def create_card_deck() -> LIST_OF_CARDS:
     """
     Create a deck of cards.
 
-    This function generates a deck of cards by iterating over each color, shade, shape, and number. It creates a `Card` object for each combination and appends it to the `cards` list. Finally, it returns the `cards` list, which represents the complete deck of cards.
-
     Returns:
         list: A list of `Card` objects representing the complete deck of cards.
     """
@@ -108,9 +106,7 @@ def find_sets_for_cards(
         deck (LIST_OF_CARDS): The full deck of cards.
 
     Returns:
-        SET_OF_CARDS: A dictionary containing the generated sets of cards.
-            The keys are strings representing the unique identifiers of each set,
-            and the values are Set objects containing the cards in each set.
+        SET_OF_CARDS: A dictionary containing the set key and the set of cards.
     """
 
     sets: SET_OF_CARDS = {}
@@ -152,9 +148,7 @@ def create_sets(cards: LIST_OF_CARDS) -> list[str]:
         cards (LIST_OF_CARDS): The list of cards from which sets will be created.
 
     Returns:
-        LIST_OF_LIST_OF_CARDS: A dictionary containing the generated sets of cards.
-            The keys are strings representing the unique identifiers of each set,
-            and the values are Set objects containing the cards in each set.
+        list[str]: A list of unique strings representing the generated sets of cards.
 
     Considerations:
         This isn't performance friendly, it's only meant to be comprehensive and simple to understand.

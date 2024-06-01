@@ -7,6 +7,10 @@ A FastAPI service that returns all the possible sets of the Set Card Game.
 3. run `make build`
 4. run `make run`
 
+# Testing
+After following **Setup**, you can run `make test` to run the tests for the project using the build docker image.
+
+
 # Usage
 Hit `localhost:8000/api/play/` with the following data structure:
 

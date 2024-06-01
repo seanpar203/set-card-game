@@ -1,5 +1,5 @@
 # Intro
-A FastAPI service that returns all the possible permutations of the Set Card Game.
+A FastAPI service that returns all the possible sets of the Set Card Game.
 
 # Setup
 1. Pull this repository
@@ -35,7 +35,7 @@ Hit `localhost:8000/api/play/` with the following data structure:
 }
 ```
 
-And it will return the possible permutations in the following data structure:
+And it will return the possible sets in the following data structure:
 
 ```json
 {

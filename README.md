@@ -10,8 +10,6 @@ A really interesting card game that's based on finding a set(3) cards that follo
 
 There's 4 attributes on each card and 3 possible values.
 
-Essentially an attribute on 3 cards have the same value, or they're all different.
-
 
 # Setup
 1. Pull this repository

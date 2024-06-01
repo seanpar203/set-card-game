@@ -1,6 +1,5 @@
 from .enums import Color, Shade, Shape, Number
 from typing import List, Dict, Iterable
-from collections import defaultdict
 
 # Types
 SET_OF_CARDS = Dict[str, "Set"]
@@ -106,8 +105,7 @@ def find_sets_for_cards(
 
     Parameters:
         cards_in_hand (LIST_OF_CARDS): The list of cards in hand.
-        set_size (int): The size of each set.
-        deck (LIST_OF_CARDS): The list of cards in the deck.
+        deck (LIST_OF_CARDS): The full deck of cards.
 
     Returns:
         SET_OF_CARDS: A dictionary containing the generated sets of cards.
@@ -146,13 +144,12 @@ def find_sets_for_cards(
     return sets
 
 
-def create_sets(cards: LIST_OF_CARDS) -> LIST_OF_LIST_OF_CARDS:
+def create_sets(cards: LIST_OF_CARDS) -> list[str]:
     """
     Generate sets of cards from a given list of cards.
 
     Parameters:
         cards (LIST_OF_CARDS): The list of cards from which sets will be created.
-        set_size (int): The size of each set.
 
     Returns:
         LIST_OF_LIST_OF_CARDS: A dictionary containing the generated sets of cards.
@@ -162,7 +159,7 @@ def create_sets(cards: LIST_OF_CARDS) -> LIST_OF_LIST_OF_CARDS:
     Considerations:
         This isn't performance friendly, it's only meant to be comprehensive and simple to understand.
     """
-    sets: Dict[str, Set] = {}
+    sets: SET_OF_CARDS = {}
 
     for i in range(0, len(cards)):
         for j in range(i + 1, len(cards)):

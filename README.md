@@ -1,11 +1,24 @@
 # Intro
 A FastAPI service that returns all the possible sets of the Set Card Game.
 
+A really interesting card game that's based on finding a set(3) cards that follow the current rules:
+
+1. They all have the same number or have three different numbers.
+2. They all have the same shape or have three different shapes.
+3. They all have the same shading or have three different shadings.
+4. They all have the same color or have three different colors.
+
+There's 4 attributes on each card and 3 possible values.
+
+Essentially an attribute on 3 cards have the same value, or they're all different.
+
+
 # Setup
 1. Pull this repository
 2. Make sure Docker is running
 3. run `make build`
 4. run `make run`
+5. service is now running on localhost:8000
 
 
 # Testing
@@ -51,18 +64,4 @@ And it will return the possible sets in the following data structure:
     ]
 }
 ```
-
-
-# Set Card Game
-A really interesting game that's based on finding a set(3) cards that follow the current rules:
-
-1. They all have the same number or have three different numbers.
-2. They all have the same shape or have three different shapes.
-3. They all have the same shading or have three different shadings.
-4. They all have the same color or have three different colors.
-
-There's 4 attributes on each card and 3 possible values.
-
-Essentially an attribute on 3 cards have the same value, or they're all different.
-
 

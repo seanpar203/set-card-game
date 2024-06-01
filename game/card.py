@@ -4,8 +4,6 @@ from typing import List, Dict, Iterable
 # Types
 SET_OF_CARDS = Dict[str, "Set"]
 LIST_OF_CARDS = List["Card"]
-LIST_OF_LIST_OF_CARDS = List[List["Card"]]
-CARDS_ATTR_VAL_MAP = Dict[str, Dict[int, List["Card"]]]
 
 
 class Card:

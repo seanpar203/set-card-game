@@ -5,6 +5,7 @@ from .card import create_card_deck
 
 client = TestClient(app)
 
+
 def test_play():
     deck = create_card_deck()
 
@@ -14,12 +15,12 @@ def test_play():
                 "color": card.color.value,
                 "shade": card.shade.value,
                 "shape": card.shape.value,
-                "number": card.number.value             
-            } for card in deck
-        ],
-        "set_size": 3
+                "number": card.number.value,
+            }
+            for card in deck
+        ]
     }
 
     res = client.post("/api/play", json=data)
 
-    assert len(res.json()["sets"]) == 73840
+    assert len(res.json()["sets"]) == 923

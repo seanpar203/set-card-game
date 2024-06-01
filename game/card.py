@@ -8,16 +8,17 @@ LIST_OF_CARDS = List["Card"]
 LIST_OF_LIST_OF_CARDS = List[List["Card"]]
 CARDS_ATTR_VAL_MAP = Dict[str, Dict[int, List["Card"]]]
 
-# Constant Keys
-CARDS_ATTR_VAL_MAP_COLOR_KEY = "Color"
-CARDS_ATTR_VAL_MAP_SHADE_KEY = "Shade"
-CARDS_ATTR_VAL_MAP_SHAPE_KEY = "Shape"
-CARDS_ATTR_VAL_MAP_NUMBER_KEY = "Number"
-
 
 class Card:
-    """ Our Card class which represents a card with different attributes. """
-    def __init__(self, color: Color = None, shade: Shade=None, shape: Shape=None, number: Number=None):
+    """Our Card class which represents a card with different attributes."""
+
+    def __init__(
+        self,
+        color: Color = None,
+        shade: Shade = None,
+        shape: Shape = None,
+        number: Number = None,
+    ):
         self.color = color
         self.shade = shade
         self.shape = shape
@@ -34,8 +35,7 @@ class Card:
 class Set:
     """Our Set class to house our logic around creating a set with cards."""
 
-    def __init__(self, size: int):
-        self.size = size
+    def __init__(self):
         self.key: str = None
         self.cards: LIST_OF_CARDS = []
 
@@ -69,12 +69,12 @@ class Set:
         card_shades = {card.shade for card in self.cards}
         card_shapes = {card.shape for card in self.cards}
 
-        is_numbers_set = len(card_numbers) == 1 or self.size
-        is_colors_set = len(card_colors) == 1 or self.size
-        is_shades_set = len(card_shades) == 1 or self.size
-        is_shapes_set = len(card_shapes) == 1 or self.size
+        is_numbers_set = len(card_numbers) == 1 or len(card_numbers) == 3
+        is_colors_set = len(card_colors) == 1 or len(card_colors) == 3
+        is_shades_set = len(card_shades) == 1 or len(card_shades) == 3
+        is_shapes_set = len(card_shapes) == 1 or len(card_shapes) == 3
 
-        return is_colors_set and is_shapes_set and is_numbers_set and is_shades_set
+        return all([is_colors_set, is_shapes_set, is_numbers_set, is_shades_set])
 
 
 def create_card_deck() -> LIST_OF_CARDS:
@@ -98,30 +98,8 @@ def create_card_deck() -> LIST_OF_CARDS:
     return cards
 
 
-def create_cards_attribute_value_map(cards: LIST_OF_CARDS) -> CARDS_ATTR_VAL_MAP:
-    """
-    Create a mapping of attribute values to cards.
-
-    This function creates a mapping of attribute values to cards, which is used to quickly access cards by attribute value.
-    """
-    cards_attr_val_map: CARDS_ATTR_VAL_MAP = {
-        CARDS_ATTR_VAL_MAP_COLOR_KEY: defaultdict(list),
-        CARDS_ATTR_VAL_MAP_SHADE_KEY: defaultdict(list),
-        CARDS_ATTR_VAL_MAP_SHAPE_KEY: defaultdict(list),
-        CARDS_ATTR_VAL_MAP_NUMBER_KEY: defaultdict(list),
-    }
-
-    for card in cards:
-        cards_attr_val_map[CARDS_ATTR_VAL_MAP_COLOR_KEY][card.color].append(card)
-        cards_attr_val_map[CARDS_ATTR_VAL_MAP_SHADE_KEY][card.shade].append(card)
-        cards_attr_val_map[CARDS_ATTR_VAL_MAP_SHAPE_KEY][card.shape].append(card)
-        cards_attr_val_map[CARDS_ATTR_VAL_MAP_NUMBER_KEY][card.number].append(card)
-
-    return cards_attr_val_map
-
-
 def find_sets_for_cards(
-    cards_in_hand: LIST_OF_CARDS, set_size: int, deck: LIST_OF_CARDS
+    cards_in_hand: LIST_OF_CARDS, deck: LIST_OF_CARDS
 ) -> SET_OF_CARDS:
     """
     Find sets of cards from a given list of cards.
@@ -145,7 +123,7 @@ def find_sets_for_cards(
     for card in cards_in_hand:
         unique_cards.remove(card)
 
-    card_set: Set = Set(set_size)
+    card_set: Set = Set()
 
     # Add cards in hand to set
     for card in cards_in_hand:
@@ -153,14 +131,14 @@ def find_sets_for_cards(
 
     for card in unique_cards:
 
-        if len(card_set) < set_size:
+        if len(card_set) < 3:
             card_set.add(card)
             continue
 
         if card_set.is_set():
             sets[card_set.key] = card_set
 
-        card_set = Set(set_size)
+        card_set = Set()
 
         for card in cards_in_hand:
             card_set.add(card)
@@ -168,7 +146,7 @@ def find_sets_for_cards(
     return sets
 
 
-def create_sets(cards: LIST_OF_CARDS, set_size: int) -> LIST_OF_LIST_OF_CARDS:
+def create_sets(cards: LIST_OF_CARDS) -> LIST_OF_LIST_OF_CARDS:
     """
     Generate sets of cards from a given list of cards.
 
@@ -183,33 +161,14 @@ def create_sets(cards: LIST_OF_CARDS, set_size: int) -> LIST_OF_LIST_OF_CARDS:
 
     Considerations:
         This isn't performance friendly, it's only meant to be comprehensive and simple to understand.
-
-        A possible performance improvement would be to use the `create_cards_attribute_value_map` function to create a mapping of attribute values to cards
-        And then use that mapping to quickly access cards by attribute value instead of iterating over all cards.
-
-        For each card and for each attribute on the card we could find all the cards that:
-            1. Have the same attribute value
-            2. Have different attribute values
     """
     sets: Dict[str, Set] = {}
 
-    if set_size == 3:
-        for i in range(0, len(cards)):
-            for j in range(i + 1, len(cards)):
+    for i in range(0, len(cards)):
+        for j in range(i + 1, len(cards)):
 
-                card_sets = find_sets_for_cards([cards[i], cards[j]], set_size, cards)
+            card_sets = find_sets_for_cards([cards[i], cards[j]], cards)
 
-                sets.update(card_sets)
-
-    if set_size == 4:
-        for i in range(0, len(cards)):
-            for j in range(i + 1, len(cards)):
-                for k in range(j + 1, len(cards)):
-
-                    card_sets = find_sets_for_cards(
-                        [cards[i], cards[j], cards[k]], set_size, cards
-                    )
-
-                    sets.update(card_sets)
+            sets.update(card_sets)
 
     return sets.keys()
